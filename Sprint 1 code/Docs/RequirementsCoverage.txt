@@ -1,0 +1,84 @@
+Requirements coverage — Moduls.txt vs ProjectInfo.txt
+======================================================
+Use this file alongside Docs/Moduls.txt while implementing: Moduls = sprint-style tasks;
+ProjectInfo = client contract (MUST/SHOULD/COULD). Update statuses as features land.
+
+Legend: [done] [partial] [open]
+
+----------------------------------------------------------------------
+A. ProjectInfo — Core & interaction (C1–C9)
+----------------------------------------------------------------------
+C1  Load DICOM & TIFF (+ S3)           [partial]  Local DICOM/TIFF OK; S3 picker = Phase 10 / D2 (open)
+C2  Parse volumetric data 100–512 sl.  [partial]  TIFF + multiframe DICOM OK; perf untested at max scale
+C3  Single-slice display               [done]
+C4  Slice navigation + index visible  [done]     "Slice n / N" + slider (when >1 slice)
+C5  Firefox / Safari / Edge             [partial]  Not formally tested; Chrome-first dev
+C6  Zoom +/- and wheel, cursor center   [partial]  +/- on canvas; wheel + cursor center = open (C6)
+C7  Pan (drag viewport)                [open]     Phase 7.3 / C7
+C8  Annotations fixed under pan/zoom   [partial]  Points stored in image coords (A6); pan not implemented
+C9  60 fps pan/zoom                   [open]     Phase 7 / N3
+
+----------------------------------------------------------------------
+B. ProjectInfo — Annotations (A1–A10)
+----------------------------------------------------------------------
+A1  Polygon (closed polyline)          [open]     Phase 4; points-only started (Phase 3)
+A2  Freehand (critical)                [open]     Phase 5
+A3  Per-slice annotations              [partial]  Points keyed by slice; not full annotation model
+A4  Multiple annotations per slice     [partial]  Multiple points; no polygon/freehand objects yet
+A5  Linked to surface label            [open]     Phase 6
+A6  (x,y) in original image pixels     [done]     OctCanvas + pointsBySlice
+A7  Move points                        [open]     Phase 8
+A8  Delete annotation                  [partial]  Clear slice only; no per-annotation delete
+A9  Remove last polygon point          [open]     SHOULD — Phase 4+
+A10 Undo/redo                         [open]     SHOULD — Phase 8
+
+----------------------------------------------------------------------
+C. ProjectInfo — Labels (L1–L8)
+----------------------------------------------------------------------
+L1–L8  Palette, colors, persist, etc.  [open]     Phase 6; panel placeholder only
+
+----------------------------------------------------------------------
+D. ProjectInfo — Export (E1–E5)
+----------------------------------------------------------------------
+E1–E4  JSON export + documented schema [open]     Phase 9; README schema TBD (E2)
+E5     Batch export                   [open]     COULD
+
+----------------------------------------------------------------------
+E. ProjectInfo — Cloud (D1–D5)
+----------------------------------------------------------------------
+D1  Web-only                           [done]
+D2  S3 file picker                    [open]     Phase 10 / C1
+D3  Local file fallback                [done]
+D4  No login                           [done]     App matches “no OKTA in app”
+D5  Lazy / responsive with big stacks  [partial]  Worker + cache; not proven at 512×1000×1024
+
+----------------------------------------------------------------------
+F. ProjectInfo — UI layout (Step 9)
+----------------------------------------------------------------------
+Canvas + slider + zoom                  [partial]  Toolbar: missing Freehand/Polygon/Pan/Undo/Export (Step 9)
+Label palette + Export button          [open]
+
+----------------------------------------------------------------------
+G. ProjectInfo — Non-functional (N1–N6) & testing (Sec 8)
+----------------------------------------------------------------------
+N1–N6  Targets                         [open]     Measure in Phase 10 / hardening
+5+ test cases + demo matrix            [open]     Align tests with ProjectInfo rows 97–103
+
+----------------------------------------------------------------------
+H. ProjectInfo — Deliverables (Sec 9)
+----------------------------------------------------------------------
+Repo, README+schema, manual, test doc, report, demo — [partial] repo exists; docs incomplete
+
+----------------------------------------------------------------------
+I. Quick mapping — Moduls phase → ProjectInfo IDs (primary)
+----------------------------------------------------------------------
+Phase 1–2  → C1–C5, C2, D3, D5 (loading)
+Phase 3    → A6, partial A3/A4, foundation for A1/A2
+Phase 4–5  → A1, A2, A9 (polygon/freehand)
+Phase 6    → A5, L1–L8
+Phase 7    → C6–C9, Step 9 toolbar zoom/pan, N3
+Phase 8    → A7–A10
+Phase 9    → E1–E4, E2 README
+Phase 10   → C1 S3, D2, N*, tests, manual, README polish
+
+Nothing in Moduls explicitly covers: S3 (D2), full Step 9 toolbar spec, NFR proof, or course deliverables — track those here and in ProjectInfo Sec 8–9.

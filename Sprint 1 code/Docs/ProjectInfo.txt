@@ -1,0 +1,111 @@
+1. Core Functional Requirements (Step-by-Step)
+Step 1: OCT Volume Loading & Browser Display
+ID	Requirement	Priority	Details
+C1	Load DICOM & TIFF files	MUST	User can select local file or from S3 bucket (no login, just simple S3 picker).
+C2	Parse volumetric data	MUST	Support 100–512 slices per volume. Each slice: up to 1000x1024 pixels.
+C3	Display single slice at a time	MUST	Default view: first slice. Navigation controls (next/previous or slider) for slices.
+C4	Slice navigation	MUST	User can jump to any slice. Slice index visible (e.g., "Slice 47 / 200").
+C5	Browser support	MUST	Works on Firefox, Safari, Edge (Chrome optional but recommended for dev).
+Step 2: Image Interaction (Pan & Zoom) – Client Critical
+ID	Requirement	Priority	Details
+C6	Zoom in/out	MUST	Mouse wheel or +/- buttons. Zoom center = mouse cursor position.
+C7	Pan	MUST	Click + drag to move viewport.
+C8	Annotation persistence during pan/zoom	MUST	Annotations stay fixed to correct image coordinates. Not lost.
+C9	Performance	MUST	Smooth 60fps pan/zoom on 1000x1024 images. No lag.
+2. Annotation Features (Step-by-Step)
+Step 3: Drawing Annotations
+ID	Requirement	Priority	Details
+A1	Point/polygon annotation	MUST	Click points to create straight-line polygon (closed shape).
+A2	Freehand annotation	CRITICAL (client gap)	Click + drag to draw continuous line. No constant clicking.
+A3	Annotation per slice	MUST	Each slice has independent annotations.
+A4	Multiple annotations per slice	MUST	Unlimited number of annotations per slice.
+A5	Annotation linked to surface label	MUST	Every annotation belongs to exactly one surface label (e.g., ILM, RPE).
+A6	Annotation storage format	MUST	List of (x,y) pixel coordinates relative to original image (not zoom/pan).
+Step 4: Editing Annotations
+ID	Requirement	Priority	Details
+A7	Move existing points	MUST	Click + drag an annotation point to new position.
+A8	Delete annotation	MUST	Click on annotation → delete button or trash icon.
+A9	Delete single point from polygon	SHOULD	Remove last point before closing shape.
+A10	Undo/redo	SHOULD	At least one level of undo for drawing/editing actions.
+3. Surface Label Management (Step-by-Step)
+Step 5: Label Palette
+ID	Requirement	Priority	Details
+L1	Predefined labels	MUST	Default list from client documentation (ILM, RPE, NFL, etc.).
+L2	Add custom label	MUST	User can type new label name.
+L3	Delete label	MUST	Remove label. Warn if annotations exist under that label.
+L4	Reorder labels	MUST	Drag/drop or up/down buttons. Order determines visual z-order (bottom layer = first in list).
+L5	Active label	MUST	User selects which label they are drawing for. New annotations use active label.
+Step 6: Visual Feedback for Labels
+ID	Requirement	Priority	Details
+L6	Color per label	MUST	Each label has unique color. User can change color.
+L7	Toggle label visibility	SHOULD	Checkbox to show/hide specific label's annotations.
+L8	Label list persists	MUST	Labels survive page reload (localStorage or session).
+4. Data Export (Step-by-Step)
+Step 7: JSON Export
+ID	Requirement	Priority	Details
+E1	Export all annotations	MUST	One JSON file containing entire volume's annotations.
+E2	JSON schema documented	MUST	README or inline documentation of every field.
+E3	Schema includes	MUST	Volume dimensions, slice count, per-slice annotations, per-annotation: label name, points list (x,y), annotation type (freehand/polygon).
+E4	No CSV required	CONFIRMED	Client explicitly said JSON is sufficient.
+E5	Batch export	COULD	Export multiple annotated volumes at once.
+Example JSON structure (minimal):
+
+json
+{
+  "volume_info": { "slices": 200, "width": 1000, "height": 1024 },
+  "annotations": {
+    "slice_47": [
+      { "label": "ILM", "type": "freehand", "points": [[100,200], [105,202], ...] },
+      { "label": "RPE", "type": "polygon", "points": [[300,400], [310,405], ...] }
+    ]
+  }
+}
+5. Cloud & Deployment Requirements (Step-by-Step)
+Step 8: Cloud-Ready Architecture
+ID	Requirement	Priority	Details
+D1	Web-based only	MUST	No desktop install. Pure browser app.
+D2	AWS S3 file picker	MUST	Simple utility to list/select files from S3 bucket (no login required, client provides access).
+D3	Local file fallback	MUST	Also works with local file upload for testing.
+D4	No login/auth	CONFIRMED	Client uses OKTA separately; not needed for this project.
+D5	Responsive performance	MUST	Smooth even with 512 slices × 1000×1024 images. Lazy load slices.
+6. UI/UX Requirements (Step-by-Step)
+Step 9: Interface Layout
+Element	Required?	Description
+Main canvas	MUST	Displays current slice with annotations overlay.
+Slice slider	MUST	0–N slider with current/total display.
+Toolbar	MUST	Buttons: Freehand, Polygon, Move (pan), Delete, Undo.
+Label palette panel	MUST	List of labels + add/delete/reorder controls.
+Export button	MUST	Triggers JSON download.
+Zoom controls	MUST	+ / - buttons (plus wheel zoom).
+Step 10: Keyboard Shortcuts (Optional but Recommended)
+Action	Shortcut	Priority
+Next slice	Right arrow	COULD
+Previous slice	Left arrow	COULD
+Delete selected annotation	Delete key	COULD
+Undo	Ctrl+Z	COULD
+Save/Export	Ctrl+S	COULD
+7. Non-Functional Requirements
+ID	Requirement	Target
+N1	Load first slice	< 2 seconds
+N2	Switch slices	< 200 ms
+N3	Pan/zoom	60 fps
+N4	Export JSON	< 1 second for 200 slices
+N5	Supported browsers	Firefox, Safari, Edge latest versions
+N6	Memory usage	< 1GB RAM for 512 slices (stream slices)
+8. Testing Requirements (Step-by-Step)
+Minimum 5 Test Cases (must pass for demo)
+Test #	Description	Input	Expected Output
+1	Load DICOM file	Sample OCT.dcm	First slice displays correctly
+2	Navigate slices	Slider to slice 100	Slice 100 displays
+3	Draw freehand annotation	Click + drag on ILM label	Continuous line appears, points stored
+4	Add custom label	Type "NewLayer" → draw annotation	Annotation shows with new label color
+5	Export JSON	Click Export	JSON file downloads, contains all annotations
+6	Pan + zoom + annotation persistence	Zoom 200%, pan, check annotation	Annotation still aligned correctly
+9. Deliverables for Final Submission (Step-by-Step)
+#	Deliverable	Due
+1	Working web app (GitHub repo)	Week 13
+2	README with setup + JSON schema	Week 13
+3	User manual (screenshots + steps)	Week 13
+4	Test results document (5+ tests)	Week 13
+5	Final technical report (all sections A-E)	Week 13
+6	Sprint 2 demo (in-class)	Week 12

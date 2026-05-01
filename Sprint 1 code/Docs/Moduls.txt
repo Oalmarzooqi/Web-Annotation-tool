@@ -1,0 +1,81 @@
+Web Annotation Tool – Module List
+Also track client requirements (C/A/L/E/D/N) in Docs/RequirementsCoverage.txt vs Docs/ProjectInfo.txt — update both when scope changes.
+Progress: Phase 3.1–3.4 implemented (image-space x/y, click points, per-slice storage, clear slice). Phase 2.2 TIFF done. Phase 2.1 & 2.3: uncompressed / non-fragment DICOM in dicomWorker (Explicit/Implicit VR LE + BE raw Pixel Data; multi-frame via NumberOfFrames). JPEG/J2K/encapsulated not supported — use uncompressed or TIFF. Phase 1.6 mock data skipped (real volumes only).
+PHASE 1: Foundation (Sprint 1)
+Module	What Needs to Be Done
+1.1	Create the basic page with a canvas area, toolbar area, and label panel area
+1.2	Add file picker button. User can select an image file from computer
+1.3	Display selected image on the canvas
+1.4	Create data structure to hold multiple slices (array)
+1.5	Add Previous/Next buttons and slider to navigate between slices
+1.6	Add mock data generator for testing (20 fake slices with numbers)
+PHASE 2: Medical File Support
+Module	What Needs to Be Done
+2.1	Parse and display DICOM files (.dcm)
+2.2	Parse and display multi-page TIFF files
+2.3	Handle multi-slice DICOM (extract all frames into slices array)
+PHASE 3: Mouse & Basic Drawing
+Module	What Needs to Be Done
+3.1	Show mouse coordinates (X, Y) relative to image, not canvas
+3.2	Click on canvas to add a point. Draw point as small circle
+3.3	Store points per slice. Points persist when changing slices
+3.4	Add Clear button to remove all points from current slice
+PHASE 4: Polygon & Line Drawing
+Module	What Needs to Be Done
+4.1	Add Polygon Mode. Click points, draw lines between them
+4.2	Double-click to close and complete the polygon
+4.3	Fill completed polygon with semi-transparent color
+4.4	Add Line Mode. Draw straight lines between two points
+PHASE 5: Freehand Drawing (Client Critical)
+Module	What Needs to Be Done
+5.1	Add Freehand Mode. Click and drag to draw continuous line
+5.2	Release mouse to finish and save freehand annotation
+5.3	Freehand line follows mouse exactly during drag
+PHASE 6: Surface Label Palette
+Module	What Needs to Be Done
+6.1	Display default labels: ILM, RPE, NFL
+6.2	Click label to make it active (highlight it)
+6.3	New annotations use the active label's color
+6.4	Add "Add Label" button. User types new label name, gets random color
+6.5	Add delete button on each label. Confirm before deleting
+6.6	When label deleted, all annotations with that label disappear
+6.7	Add ability to reorder labels (drag/drop or up/down buttons)
+PHASE 7: Zoom & Pan (Client Critical)
+Module	What Needs to Be Done
+7.1	Add Zoom In (+) and Zoom Out (-) buttons
+7.2	Mouse wheel zooms in/out centered on cursor position
+7.3	Add Pan Mode. Click and drag to move the viewport
+7.4	CRITICAL: Annotations stay perfectly aligned when zooming or panning
+PHASE 8: Editing Annotations
+Module	What Needs to Be Done
+8.1	Add Edit Mode. Click near a point to select it
+8.2	Drag selected point to move it to new position
+8.3	Click on an annotation to select it, press Delete key to remove it
+8.4	Add Undo button (reverses last action)
+8.5	Add Redo button (restores undone action)
+PHASE 9: Data Export
+Module	What Needs to Be Done
+9.1	Add Export JSON button
+9.2	Collect all slices, all annotations, all labels into one JSON object
+9.3	Trigger download of JSON file
+9.4	Document JSON schema in README file
+PHASE 10: Cloud & Final Polish
+Module	What Needs to Be Done
+10.1	Add AWS S3 file picker (list and load files from S3 bucket)
+10.2	Create user manual with screenshots for every feature
+10.3	Write 5+ test cases (load, navigate, draw, export, zoom/pan)
+10.4	Performance optimization: smooth 60fps pan/zoom on large images
+10.5	Final cleanup: remove console logs, add comments, finalize README
+Summary Table
+Phase	Modules	Focus
+Phase 1	6	Basic page + image display + navigation
+Phase 2	3	DICOM + TIFF support
+Phase 3	4	Mouse tracking + basic points
+Phase 4	4	Polygon + line drawing
+Phase 5	3	Freehand drawing
+Phase 6	7	Label palette management
+Phase 7	4	Zoom + Pan + persistence
+Phase 8	5	Editing (move, delete, undo, redo)
+Phase 9	4	JSON export
+Phase 10	5	Cloud, manual, testing, polish
+Total	45	Complete annotation tool
