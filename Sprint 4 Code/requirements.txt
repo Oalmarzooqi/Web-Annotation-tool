@@ -1,0 +1,6 @@
+# Python environment for optional tooling (e.g. DICOM/TIFF experiments, scripts).
+# Main app is Next.js in ./web — install JS deps with: cd web && npm install
+
+numpy>=1.26.0
+Pillow>=10.0.0
+pydicom>=2.4.0
