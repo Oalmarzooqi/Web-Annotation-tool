@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/*
+  Typography (three roles):
+  • font-sans / Inter — body copy, navigation, form labels, descriptions, sidebar.
+  • font-heading / Plus Jakarta Sans — page titles (h1), section & card titles (h2–h3), app bar product name.
+  • font-mono / IBM Plex Mono — IDs, paths, filenames, dimensions, code-like snippets, storage badges.
+*/
+
+:root {
+  /* Light mode — clean, white background + ocean accent */
+  --background: #ffffff;
+  --foreground: #0b1220;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Semantic tokens */
+  --color-surface: #ffffff;
+  --color-surface-2: #f8fafc;
+  --color-border: #e5e7eb;
+  --color-muted: #64748b;
+  --color-accent: #40e0ff; /* ocean cyan */
+  --color-accent-strong: #0891b2;
+  --color-ocean-green: #2e8b57;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+}
+
+/* Thin ocean-green range slider (track as single line) */
+.oct-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px; /* hit area */
+  background: transparent;
+}
+
+.oct-slider:focus {
+  outline: none;
+}
+
+/* WebKit */
+.oct-slider::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--color-ocean-green);
+  border-radius: 999px;
+}
+.oct-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  margin-top: -4px; /* center on 2px track */
+  border-radius: 999px;
+  background: var(--color-ocean-green);
+  border: 0;
+}
+
+/* Firefox */
+.oct-slider::-moz-range-track {
+  height: 2px;
+  background: var(--color-ocean-green);
+  border: 0;
+  border-radius: 999px;
+}
+.oct-slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-ocean-green);
+  border: 0;
+}
